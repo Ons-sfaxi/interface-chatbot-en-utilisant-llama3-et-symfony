@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
+    <title>LLAMA3-CHAT</title>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>LLAMA3-CHAT</h1>
+            <div class="status-indicator"></div>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <!-- Messages will be displayed here -->
+        </div>
+        <form id="chat-form" class="chat-input">
+            <input type="text" id="message" placeholder="Posez votre question..." autocomplete="off">
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+
+    <script src="{{ asset('assets/app.js') }}"></script>
+    <script>
+        document.getElementById('chat-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+
+            if (message.trim() === '') return;
+
+            const chatBody = document.getElementById('chat-body');
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user';
+            userMessageDiv.innerHTML = `<div class="message-content">${message}</div>`;
+            chatBody.appendChild(userMessageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+            messageInput.value = '';
+
+            fetch(`/chat?message=${encodeURIComponent(message)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chat-message bot';
+                    botMessageDiv.innerHTML = `<div class="message-content">${data.response}</div>`;
+                    chatBody.appendChild(botMessageDiv);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                });
+        });
+    </script>
+</body>
+</html>

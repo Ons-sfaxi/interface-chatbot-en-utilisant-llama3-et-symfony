@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
+    <title>LLAMA3-CHAT</title>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <button class="new-chat" id="new-chat">New Chat</button>
+            <div class="chat-history">
+                <h3>Chat History</h3>
+                <ul id="history-list">
+                    <!-- Historique des chats s'affichera ici -->
+                </ul>
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <img src="{{ asset('../assets/images/llama.jpg') }}" alt="Llama3 Logo" class="logo">
+                <h1>LLAMA3-CHAT</h1>
+                <div class="status-indicator"></div>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <!-- Messages will be displayed here -->
+            </div>
+            <form id="chat-form" class="chat-input">
+                <input type="text" id="message" placeholder="Posez votre question..." autocomplete="off">
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ asset('templates/chatbot/chat.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
+    <title>LLAMA3-CHAT</title>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <button class="new-chat" id="new-chat">New Chat</button>
+            <div class="chat-history">
+                <h3>Chat History</h3>
+                <ul id="history-list">
+                    <!-- Historique des chats s'affichera ici -->
+                </ul>
+            </div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h1>LLAMA3-CHAT</h1>
+                <button id="theme-toggle">Toggle Theme</button>
+                <div class="status-indicator"></div>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <!-- Messages will be displayed here -->
+            </div>
+            <form id="chat-form" class="chat-input">
+                <input type="text" id="message" placeholder="Posez votre question..." autocomplete="off">
+                <button type="submit">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ asset('assets/app.js') }}"></script>
+    <script>
+        let chatHistory = [];  // Tableau pour stocker l'historique des conversations
+        let currentChatIndex = -1;  // Index de la conversation actuelle
+
+        document.getElementById('chat-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+
+            if (message.trim() === '') return;
+
+            const chatBody = document.getElementById('chat-body');
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'chat-message user';
+            userMessageDiv.innerHTML = `<div class="message-content">${message}</div>`;
+            chatBody.appendChild(userMessageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Ajouter le message de l'utilisateur à l'historique
+            if (currentChatIndex === -1) {
+                chatHistory.push([]);
+                currentChatIndex = chatHistory.length - 1;
+            }
+            chatHistory[currentChatIndex].push({ type: 'user', content: message });
+
+            messageInput.value = '';
+
+            fetch(`/chat?message=${encodeURIComponent(message)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.className = 'chat-message bot';
+                    botMessageDiv.innerHTML = `<div class="message-content">${data.response}</div>`;
+                    chatBody.appendChild(botMessageDiv);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+
+                    // Ajouter la réponse du bot à l'historique
+                    chatHistory[currentChatIndex].push({ type: 'bot', content: data.response });
+
+                    // Mettre à jour l'historique affiché
+                    updateChatHistory();
+                });
+        });
+
+        // Fonction pour mettre à jour l'affichage de l'historique des chats
+        function updateChatHistory() {
+            const historyList = document.getElementById('history-list');
+            historyList.innerHTML = '';
+            chatHistory.forEach((chat, index) => {
+                const historyItem = document.createElement('li');
+                historyItem.innerHTML = `Conversation ${index + 1} <button onclick="loadChat(${index})">Load</button>`;
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // Fonction pour charger une conversation précédente
+        function loadChat(index) {
+            currentChat

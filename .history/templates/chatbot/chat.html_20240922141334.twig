@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('assets/styles/app.css') }}">
+    <title>LLAMA3-CHAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <button class="new-chat" id="new-chat">New Chat</button>
+
+            <!-- Section des boutons Home et Upgrade -->
+            <div class="sidebar-top">
+                <button class="nav-button" id="home-button">Home</button>
+                <button class="nav-button" id="upgrade-button">Upgrade</button>
+            </div>
+
+            <!-- Ligne horizontale -->
+            <hr>
+
+            <!-- Section des suggestions de questions -->
+            <div class="suggestions">
+                <h3>Suggestions</h3>
+                <button class="suggestion-button">Comment fonctionne Llama3 ?</button>
+                <button class="suggestion-button">Quelles sont les capacités du modèle ?</button>
+                <button class="suggestion-button">Quels sont les avantages de ce modèle ?</button>
+            </div>
+
+            <!-- Ligne horizontale pour séparer les suggestions et l'historique des chats -->
+            <hr>
+
+            <!-- Historique des chats -->
+            <div class="chat-history">
+                <h3>Chat History</h3>
+                <ul id="history-list">
+                    <!-- Historique des chats s'affichera ici -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <img src="{{ asset('../assets/images/llama.jpg') }}" alt="Llama3 Logo" class="logo">
+                <h1>LLAMA3-CHAT</h1>
+                <div class="status-indicator"></div>
+            </div>
+            <div class="chat-body" id="chat-body">
+                <!-- Les messages s'afficheront ici -->
+            </div>
+
+            <!-- Formulaire de chat -->
+            <form id="chat-form" class="chat-input">
+                <input type="text" id="message" placeholder="Posez votre question..." autocomplete="off">
+                <button type="submit">Envoyer</button>
+            </form>
+
+            <!-- Section de l'image de l'utilisateur -->
+            <div class="user-image">
+                <img src="{{ asset('assets/images/photo-1.jpg') }}" alt="User Profile" class="profile-img">
+                <input type="file" id="upload-avatar" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Indicateur de saisie -->
+            <div id="typing-indicator" class="typing-indicator" style="display:none;">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
+<script src="{{ asset('assets/chat.js') }}"> </script>
+<script
+
+    const userAvatarPath = "{{ asset('assets/images/photo-1.jpg') }}";
+    const llamaAvatarPath = "{{ asset('assets/images/chat.jpg') }}";
+
+</script>
+</body>
+</html>
